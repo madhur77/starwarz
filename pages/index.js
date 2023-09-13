@@ -10,77 +10,37 @@ export default function Home({ people }) {
   const [_filteredresidents, setFilteredResidents] = useState([]);
   const [planet, setPlanet] = useState("");
   const [hasResults, setResults] = useState(0);
-  const [results, setSearchResults] = useState(1);
-  const [totalpages, SetTotalPages] = useState(2);
+  const [results, setSearchResults] = useState(0);
+  const [totalpages, SetTotalPages] = useState(0);
   const [total, SetTotal] = useState(0);
   const inputRef = useRef();
   const resultsRef = useRef();
   const [input, setInput] = useState();
-  const resultsperpage = 2;
+  const resultsperpage = 10; // use this to change pagination
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    if (hasResults) {
-      document.body.addEventListener("keydown", onKeyDown);
-    } else {
-      document.body.removeEventListener("keydown", onKeyDown);
-    }
-    return () => {
-      document.body.removeEventListener("keydown", onKeyDown);
-    };
-  }, [hasResults]);
 
-  const onKeyDown = (event) => {
-    const isUp = event.key === "ArrowUp";
-    const isDown = event.key === "ArrowDown";
-    const inputIsFocused = document.activeElement === inputRef.current;
-
-    const resultsItems = Array.from(resultsRef.current.children);
-
-    const activeResultIndex = resultsItems.findIndex((child) => {
-      return child.querySelector("a") === document.activeElement;
-    });
-
-    if (isUp) {
-      console.log("Going up!");
-      if (inputIsFocused) {
-        resultsItems[resultsItems.length - 1].querySelector("a").focus();
-      } else if (resultsItems[activeResultIndex - 1]) {
-        resultsItems[activeResultIndex - 1].querySelector("a").focus();
-      } else {
-        inputRef.current.focus();
-      }
-    }
-
-    if (isDown) {
-      console.log("Going down!");
-      if (inputIsFocused) {
-        resultsItems[0].querySelector("a").focus();
-      } else if (resultsItems[activeResultIndex + 1]) {
-        resultsItems[activeResultIndex + 1].querySelector("a").focus();
-      } else {
-        inputRef.current.focus();
-      }
-    }
-  };
-
+  //handle search event
   const handleSearch = (event) => {
     event.preventDefault();
     setInput(input);
     let results = people.filter(
       ({ name }) => input && name.toLowerCase().includes(input.toLowerCase())
     );
+    if (!results.length) alert("no results for the query");
     setSearchResults(results);
     let _hasResults = results && results.length > 0;
     setResults(_hasResults);
   };
 
+  // handle  input change
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
 
+  // fill list data
   const displayResults = (pagenumber, residents) => {
     let n =
       pagenumber == 0
@@ -125,6 +85,7 @@ export default function Home({ people }) {
                   SEARCH
                 </button>
               </span>
+
               {hasResults && (
                 <div className={styles.autocomplete}>
                   <ul ref={resultsRef} className={styles.people}>
@@ -182,8 +143,10 @@ export default function Home({ people }) {
             </nav>
           </div>
         )}
-        
-        {!residents.length && (<div className={styles.error}>No people on this planet</div>)}
+
+        {!residents.length && (
+          <div className={styles.error}>No people on this planet</div>
+        )}
         {residents.length && <List residents={_filteredresidents} />}
 
         <div></div>

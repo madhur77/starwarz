@@ -3,12 +3,12 @@ import styles from "./styles.module.css";
 
 const Character = ({ item: item, index: index }) => {
   const [character, setCharacetr] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); /// set loading state
   const _item = item;
   const _jersey = _item
     .replace("https://swapi.dev/api/people/", "")
     .replace("/", "");
-
+// fetch people data
   useEffect(() => {
     fetch(item)
       .then((response) => response.json())
