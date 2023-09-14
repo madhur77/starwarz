@@ -68,11 +68,13 @@ export default function Home({ people }) {
           <div className={styles.headerSearchBar}>
             <form className={styles.form} method="post" autoComplete="off">
               <input
+              placeholder="search planet name here!"
                 ref={inputRef}
                 type="search"
                 name="query"
                 onChange={(e) => {
                   handleInputChange(e);
+                  
                 }}
               />
               <span>
