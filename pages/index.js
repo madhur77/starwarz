@@ -8,7 +8,7 @@ import logo from "../public/logo.png";
 export default function Home({ people }) {
   const [residents, setResidents] = useState(false);
   const [_filteredresidents, setFilteredResidents] = useState([]);
-  const [planet, setPlanet] = useState("");
+  const [planet, setPlanet] = useState(false);
   const [hasResults, setResults] = useState(false);
   const [results, setSearchResults] = useState(false);
   const [totalpages, SetTotalPages] = useState(0);
@@ -135,7 +135,7 @@ export default function Home({ people }) {
           </div>
         )}
 
-        {!residents.length  && input &&  (
+        {!residents.length && input &&  (
           <div className={styles.error}>No people on this planet</div>
         )}
         {residents.length && <List residents={_filteredresidents} />}
